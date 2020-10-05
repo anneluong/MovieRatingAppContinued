@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30523.141
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRatingApp.Core.Tests", "MovieRatingApp.Core.Tests\MovieRatingApp.Core.Tests.csproj", "{2C239EAB-453D-4563-B2FE-BEFAA740D4D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRatingApp.Core.Tests.xUnit", "MovieRatingApp.Core.Tests\MovieRatingApp.Core.Tests.xUnit.csproj", "{2C239EAB-453D-4563-B2FE-BEFAA740D4D6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A791E1DE-22F2-45B5-86A1-47A4C0B8DB44}"
 EndProject
@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRatingApp.Infrastructu
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{6A94522A-0DCA-4672-A50E-E29A6AF6D2E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{FAFD8156-F572-486F-84FC-55EC134177B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{FAFD8156-F572-486F-84FC-55EC134177B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRatingApp.Core.Tests.MSTest", "MovieRatingApp.Core.Tests.MSTest\MovieRatingApp.Core.Tests.MSTest.csproj", "{E2B77581-8E33-442A-9F70-D519A0192FFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{FAFD8156-F572-486F-84FC-55EC134177B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAFD8156-F572-486F-84FC-55EC134177B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FAFD8156-F572-486F-84FC-55EC134177B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2B77581-8E33-442A-9F70-D519A0192FFF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2B77581-8E33-442A-9F70-D519A0192FFF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2B77581-8E33-442A-9F70-D519A0192FFF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2B77581-8E33-442A-9F70-D519A0192FFF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -55,6 +61,7 @@ Global
 		{CB712938-FC0F-4C7A-9960-A2AEBFAF5343} = {A791E1DE-22F2-45B5-86A1-47A4C0B8DB44}
 		{A92F40F4-D3B5-4DD6-94D5-5873E83CF2F4} = {235D8F8C-14A4-4C0F-9841-1655E825FBD5}
 		{FAFD8156-F572-486F-84FC-55EC134177B9} = {6A94522A-0DCA-4672-A50E-E29A6AF6D2E1}
+		{E2B77581-8E33-442A-9F70-D519A0192FFF} = {A791E1DE-22F2-45B5-86A1-47A4C0B8DB44}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B4587AA-9998-48AB-B741-1D8D91D6C3CC}
