@@ -18,14 +18,15 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
         {
             if (reviewer < 1)
                 throw new ArgumentException("The id of the reviewer has to be larger than 0.");
-            return _movieRepository.GetAll().Count(p => p.ReviewerId == reviewer);
+            return _movieRepository.GetAll().Count(p => p.Reviewer == reviewer);
         }
 
         public double GetAverageRateFromReviewer(int reviewer)
         {
             if (reviewer < 1)
                 throw new ArgumentException("The id of the reviewer has to be larger than 0.");
-            return _movieRepository.GetAll().Where(p => p.ReviewerId == reviewer).Average(p => p.Grade);
+            //return return _movieRepository.GetAll().Where(p => p.Movie == movie).Average(p => p.Grade);
+            return _movieRepository.GetAll().Where(p => p.Reviewer == reviewer).Select(p => p.Grade).Average();
         }
 
         public int GetNumberOfRatesByReviewer(int reviewer, int rate)
@@ -34,21 +35,22 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 throw new ArgumentException("The id of the reviewer has to be larger than 0.");
             if (rate < 1 || rate > 5)
                 throw new ArgumentException("The rate has to be within the range 1-5.");
-            return _movieRepository.GetAll().Count(p => p.ReviewerId == reviewer && p.Grade == rate);
+            return _movieRepository.GetAll().Count(p => p.Reviewer == reviewer && p.Grade == rate);
         }
 
         public int GetNumberOfReviews(int movie)
         {
             if (movie < 1)
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
-            return _movieRepository.GetAll().Count(p => p.MovieId == movie);
+            return _movieRepository.GetAll().Count(p => p.Movie == movie);
         }
 
         public double GetAverageRateOfMovie(int movie)
         {
             if (movie < 1)
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
-            return _movieRepository.GetAll().Where(p => p.MovieId == movie).Average(p => p.Grade);
+            //return _movieRepository.GetAll().Where(p => p.Movie == movie).Average(p => p.Grade);
+            return _movieRepository.GetAll().Where(p => p.Movie == movie).Select(p => p.Grade).Average();
         }
 
         public int GetNumberOfRates(int movie, int rate)
@@ -57,14 +59,15 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
             if (!(rate > 0 && rate < 6))
                 throw new ArgumentException("The rate has to be within the range 1-5.");
-            return _movieRepository.GetAll().Count(p => p.MovieId == movie && p.Grade == rate);
+            else
+            return _movieRepository.GetAll().Count(p => p.Movie == movie && p.Grade == rate);
         }
 
         public List<int> GetMoviesWithHighestNumberOfTopRates() // RADO VERY DIFFERENT
         {
             return _movieRepository.GetAll()
-                .OrderByDescending(p => GetNumberOfRates(p.MovieId, 5))
-                .Select(p => p.MovieId)
+                .OrderByDescending(p => GetNumberOfRates(p.Movie, 5))
+                .Select(p => p.Movie)
                 .Distinct()
                 .ToList();
         }
@@ -72,7 +75,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
         public List<int> GetMostProductiveReviewers()
         {
             return _movieRepository.GetAll()
-                .GroupBy(p => p.ReviewerId)
+                .GroupBy(p => p.Reviewer)
                 .OrderByDescending(p => p.Count())
                 .Select(p => p.Key)
                 .ToList();
@@ -83,8 +86,8 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
             if (amount < 1)
                 throw new ArgumentException("The amount has to be larger than 0.");
             return _movieRepository.GetAll()
-                .OrderByDescending(p => GetAverageRateOfMovie(p.MovieId))
-                .Select(p => p.MovieId)
+                .OrderByDescending(p => GetAverageRateOfMovie(p.Movie))
+                .Select(p => p.Movie)
                 .Distinct()
                 .Take(amount)
                 .ToList();
@@ -92,31 +95,32 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
 
         public List<int> GetTopMoviesByReviewer(int reviewer) //RADO DIFFERENT
         {
-            //ANNE DIFFERENT: 1 sec
+            /*//ANNE DIFFERENT: 1 sec
             if (reviewer < 1)
                 throw new ArgumentException("The id of the reviewer has to be larger than 0.");
             return _movieRepository.GetAll()
-                .Where(p => p.ReviewerId == reviewer)
+                .Where(p => p.Reviewer == reviewer)
                 .OrderByDescending(p => p.Grade)
                 .ThenByDescending(p => p.Date)
-                .Select(p => p.MovieId)
+                .Select(p => p.Movie)
                 .ToList();
 
-            /*
+            */
+            
             //RADO DIFFERENT: 2 sec
             var reviewersReviews = _movieRepository.GetAll()
-                .Where(p => p.ReviewerId == reviewer)
+                .Where(p => p.Reviewer == reviewer)
                 .OrderByDescending(p => p.Grade)
                 .ThenByDescending(p => p.Date)
-                .ThenBy(r => r.MovieId); //this line and below
+                .ThenBy(r => r.Movie); //this line and below
 
             var idsList = new List<int>();
 
             foreach (var review in reviewersReviews)
-                idsList.Add(review.MovieId);
+                idsList.Add(review.Movie);
 
             return idsList;
-            */
+            
         }
 
         public List<int> GetReviewersByMovie(int movie)
@@ -124,10 +128,10 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
             if (movie < 1)
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
             return _movieRepository.GetAll()
-                .Where(p => p.MovieId == movie)
+                .Where(p => p.Movie == movie)
                 .OrderByDescending(p => p.Grade)
                 .ThenByDescending(p => p.Date)
-                .Select(p => p.ReviewerId)
+                .Select(p => p.Reviewer)
                 .ToList();
         }
     }

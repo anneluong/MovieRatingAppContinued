@@ -19,9 +19,9 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -45,9 +45,9 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -71,10 +71,10 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -87,7 +87,7 @@ namespace MovieRatingApp.Core.ApplicationService
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult == 2, "Number of rating 5 (from ReviewerId = 111) is NOT 2.");
+            Assert.True(actualResult == 2, "Number of rating 5 (from Reviewer = 111) is NOT 2.");
         }
 
         [Fact]
@@ -98,9 +98,9 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -124,9 +124,9 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -151,10 +151,10 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -167,7 +167,7 @@ namespace MovieRatingApp.Core.ApplicationService
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult == 1, "Number of rating 1 (for MovieId = 1) is NOT 1.");
+            Assert.True(actualResult == 1, "Number of rating 1 (for Movie = 1) is NOT 1.");
         }
 
         [Fact]
@@ -178,17 +178,17 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 5},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 4},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 3},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 5},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 4},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 3},
 
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 2, Grade = 5},
-                new Rating {ReviewerId = 112, MovieId = 3, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 112, Movie = 3, Grade = 5},
 
-                new Rating {ReviewerId = 113, MovieId = 1, Grade = 5},
-                new Rating {ReviewerId = 113, MovieId = 2, Grade = 4},
-                new Rating {ReviewerId = 113, MovieId = 3, Grade = 5},
+                new Rating {Reviewer = 113, Movie = 1, Grade = 5},
+                new Rating {Reviewer = 113, Movie = 2, Grade = 4},
+                new Rating {Reviewer = 113, Movie = 3, Grade = 5},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -214,14 +214,14 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 1},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 4},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 3},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 4},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 3},
 
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 1},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
 
-                new Rating {ReviewerId = 113, MovieId = 1, Grade = 4},
-                new Rating {ReviewerId = 113, MovieId = 2, Grade = 4},
+                new Rating {Reviewer = 113, Movie = 1, Grade = 4},
+                new Rating {Reviewer = 113, Movie = 2, Grade = 4},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -247,16 +247,16 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 5},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 2},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 3},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 5},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 2},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 3},
 
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 4},
-                new Rating {ReviewerId = 112, MovieId = 2, Grade = 4},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 4},
+                new Rating {Reviewer = 112, Movie = 2, Grade = 4},
 
-                new Rating {ReviewerId = 113, MovieId = 2, Grade = 4},
-                new Rating {ReviewerId = 113, MovieId = 3, Grade = 4},
-                new Rating {ReviewerId = 113, MovieId = 4, Grade = 1},
+                new Rating {Reviewer = 113, Movie = 2, Grade = 4},
+                new Rating {Reviewer = 113, Movie = 3, Grade = 4},
+                new Rating {Reviewer = 113, Movie = 4, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -282,15 +282,15 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 4, Date = DateTime.Parse("2020-03-11")},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5, Date = DateTime.Parse("2002-03-12")},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 4, Date = DateTime.Parse("2020-03-11")},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5, Date = DateTime.Parse("2002-03-12")},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 4, Date = DateTime.Parse("2020-03-12")},
 
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 3, Date = DateTime.Parse("2020-03-12")},
-                new Rating {ReviewerId = 112, MovieId = 2, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 3, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 112, Movie = 2, Grade = 4, Date = DateTime.Parse("2020-03-12")},
 
-                new Rating {ReviewerId = 113, MovieId = 2, Grade = 5, Date = DateTime.Parse("2020-03-12")},
-                new Rating {ReviewerId = 113, MovieId = 3, Grade = 3, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 113, Movie = 2, Grade = 5, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 113, Movie = 3, Grade = 3, Date = DateTime.Parse("2020-03-12")},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
@@ -321,15 +321,15 @@ namespace MovieRatingApp.Core.ApplicationService
 
             Rating[] returnValue =
             {
-                new Rating {ReviewerId = 111, MovieId = 1, Grade = 4, Date = DateTime.Parse("2020-03-11")},
-                new Rating {ReviewerId = 111, MovieId = 2, Grade = 5, Date = DateTime.Parse("2002-03-12")},
-                new Rating {ReviewerId = 111, MovieId = 3, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 111, Movie = 1, Grade = 4, Date = DateTime.Parse("2020-03-11")},
+                new Rating {Reviewer = 111, Movie = 2, Grade = 5, Date = DateTime.Parse("2002-03-12")},
+                new Rating {Reviewer = 111, Movie = 3, Grade = 4, Date = DateTime.Parse("2020-03-12")},
 
-                new Rating {ReviewerId = 112, MovieId = 1, Grade = 4, Date = DateTime.Parse("2020-03-12")},
-                new Rating {ReviewerId = 112, MovieId = 2, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 112, Movie = 1, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 112, Movie = 2, Grade = 4, Date = DateTime.Parse("2020-03-12")},
 
-                new Rating {ReviewerId = 113, MovieId = 2, Grade = 5, Date = DateTime.Parse("2020-03-12")},
-                new Rating {ReviewerId = 113, MovieId = 3, Grade = 3, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 113, Movie = 2, Grade = 5, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 113, Movie = 3, Grade = 3, Date = DateTime.Parse("2020-03-12")},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
