@@ -1,6 +1,7 @@
 ﻿using MovieRatingApp.Core.DomainService;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace MovieRatingApp.Core.ApplicationService.Implementations
@@ -49,8 +50,8 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
         {
             if (movie < 1)
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
-            //return _movieRepository.GetAll().Where(p => p.Movie == movie).Average(p => p.Grade);
-            return _movieRepository.GetAll().Where(p => p.Movie == movie).Select(p => p.Grade).Average();
+            return _movieRepository.GetAll().Where(p => p.Movie == movie).Average(p => p.Grade);
+            //return _movieRepository.GetAll().Where(p => p.Movie == movie).Select(p => p.Grade).Average();
         }
 
         public int GetNumberOfRates(int movie, int rate)
@@ -60,12 +61,29 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
             if (!(rate > 0 && rate < 6))
                 throw new ArgumentException("The rate has to be within the range 1-5.");
             else
-            return _movieRepository.GetAll().Count(p => p.Movie == movie && p.Grade == rate);
+                return _movieRepository.GetAll().Count(p => p.Movie == movie && p.Grade == rate);
         }
 
         public List<int> GetMoviesWithHighestNumberOfTopRates() // RADO VERY DIFFERENT
         {
-            return _movieRepository.GetAll()
+            /*
+            var allRatings = _movieRepository.GetAll();
+            var allMovies = allRatings.Select(p => p.Movie).Distinct();
+            
+            var dictionary = new Dictionary<int, double>();
+            foreach (var movie in allMovies)
+            {
+                if (!dictionary.ContainsKey(movie))
+                {
+                    dictionary.Add(movie, GetNumberOfRates(movie,5));
+                }
+            }
+
+            return dictionary.OrderByDescending(p => p.Value).Select(p => p.Key).ToList();
+            */
+            
+            
+             return _movieRepository.GetAll()
                 .OrderByDescending(p => GetNumberOfRates(p.Movie, 5))
                 .Select(p => p.Movie)
                 .Distinct()
@@ -85,17 +103,48 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
         {
             if (amount < 1)
                 throw new ArgumentException("The amount has to be larger than 0.");
+
+            var allRatings = _movieRepository.GetAll();
+            var accumulatedGradeDictionary = new Dictionary<int,double>();
+            var countDictionary = new Dictionary<int,int>();
+            foreach (var rating in allRatings)
+            {
+                if (!accumulatedGradeDictionary.ContainsKey(rating.Movie))
+                {
+                    accumulatedGradeDictionary.Add(rating.Movie,rating.Grade);
+                    countDictionary.Add(rating.Movie,1);
+                }
+                else
+                {
+                    var currentGrade = accumulatedGradeDictionary[rating.Movie];
+                    accumulatedGradeDictionary [rating.Movie] = (currentGrade + rating.Grade);
+                    var count = countDictionary[rating.Movie];
+                    countDictionary[rating.Movie] = count + 1;
+                }
+            }
+
+            var myDictionary = new Dictionary<int,double>();
+            foreach (var pair in accumulatedGradeDictionary)
+            {
+                var grade = accumulatedGradeDictionary[pair.Key];
+                var count = countDictionary[pair.Key];
+
+                myDictionary.Add(pair.Key,grade/count);
+            }
+            return myDictionary.OrderByDescending(x => x.Value).Select(p => p.Key).Take(amount).ToList();
+
+            /* Too slow
             return _movieRepository.GetAll()
                 .OrderByDescending(p => GetAverageRateOfMovie(p.Movie))
                 .Select(p => p.Movie)
-                .Distinct()
                 .Take(amount)
                 .ToList();
+            */
         }
 
         public List<int> GetTopMoviesByReviewer(int reviewer) //RADO DIFFERENT
         {
-            /*//ANNE DIFFERENT: 1 sec
+            //ANNE DIFFERENT: 1 sec
             if (reviewer < 1)
                 throw new ArgumentException("The id of the reviewer has to be larger than 0.");
             return _movieRepository.GetAll()
@@ -105,8 +154,8 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 .Select(p => p.Movie)
                 .ToList();
 
-            */
             
+            /*
             //RADO DIFFERENT: 2 sec
             var reviewersReviews = _movieRepository.GetAll()
                 .Where(p => p.Reviewer == reviewer)
@@ -120,7 +169,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 idsList.Add(review.Movie);
 
             return idsList;
-            
+            */
         }
 
         public List<int> GetReviewersByMovie(int movie)

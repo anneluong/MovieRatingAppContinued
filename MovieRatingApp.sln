@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{6A94522A-0DCA-
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp", "ConsoleApp\ConsoleApp.csproj", "{FAFD8156-F572-486F-84FC-55EC134177B9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieRatingApp.Core.Tests.MSTest", "MovieRatingApp.Core.Tests.MSTest\MovieRatingApp.Core.Tests.MSTest.csproj", "{E2B77581-8E33-442A-9F70-D519A0192FFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieRatingApp.Core.Tests.MSTest", "MovieRatingApp.Core.Tests.MSTest\MovieRatingApp.Core.Tests.MSTest.csproj", "{E2B77581-8E33-442A-9F70-D519A0192FFF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

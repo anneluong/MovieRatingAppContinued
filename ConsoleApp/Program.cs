@@ -15,7 +15,7 @@ namespace ConsoleApp
             for (int i = 0; i < 10; i++)
             {
                 Rating c = ratings[i];
-                Console.WriteLine("Reviewer = " + c.ReviewerId + " date = " + c.Date);
+                Console.WriteLine("Reviewer = " + c.Reviewer + " date = " + c.Date);
             }
         }
     }

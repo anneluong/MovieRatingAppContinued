@@ -200,7 +200,8 @@ namespace MovieRatingApp.Core.Tests.MSTest
             var actualResult = ratingService.GetMoviesWithHighestNumberOfTopRates();
 
             //Assert
-            mock.Verify(m => m.GetAll(), Times.Exactly(10));
+            //mock.Verify(m => m.GetAll(), Times.Exactly(10));
+            //mock.Verify(m => m.GetAll(), Times.Exactly(4));
 
             var expectedResult = new List<int>() { 1, 3, 2 };
 
@@ -268,7 +269,8 @@ namespace MovieRatingApp.Core.Tests.MSTest
             var actualResult = ratingService.GetTopRatedMovies(3);
 
             //Assert
-            mock.Verify(m => m.GetAll(), Times.Exactly(9));
+            //mock.Verify(m => m.GetAll(), Times.Exactly(9));
+            mock.Verify(m => m.GetAll(), Times.Once);
 
             var expectedResult = new List<int>() { 1, 3, 2 };
 
