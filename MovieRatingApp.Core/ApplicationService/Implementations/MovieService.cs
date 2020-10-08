@@ -62,20 +62,20 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
             return _movieRepository.GetAll().Count(p => p.Movie == movie && p.Grade == rate);
         }
 
-        public List<int> GetMoviesWithHighestNumberOfTopRates() // RADO VERY DIFFERENT
+        public List<int> GetMoviesWithHighestNumberOfTopRates()
         {
-            var allTopRatings = _movieRepository.GetAll().Where(r => r.Grade == 5);
+            var allTopRatings = _movieRepository.GetAll().Where(p => p.Grade == 5);
 
-            var dict = new Dictionary<int, int>();
-            foreach (var r in allTopRatings)
+            var dictionary = new Dictionary<int, int>();
+            foreach (var rating in allTopRatings)
             {
-                if (!dict.ContainsKey(r.Movie))
-                    dict.Add(r.Movie, 1);
+                if (!dictionary.ContainsKey(rating.Movie))
+                    dictionary.Add(rating.Movie, 1);
                 else
-                    dict[r.Movie] += 1;
+                    ++dictionary[rating.Movie];
             }
 
-            return dict.OrderByDescending(p => p.Value).Select(p => p.Key).ToList();
+            return dictionary.OrderByDescending(p => p.Value).Select(p => p.Key).ToList();
         }
 
         public List<int> GetMostProductiveReviewers()
@@ -106,7 +106,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 {
                     var currentGrade = accumulatedGradeDictionary[rating.Movie];
                     accumulatedGradeDictionary[rating.Movie] = (currentGrade + rating.Grade);
-                    countDictionary[rating.Movie]++;
+                    ++countDictionary[rating.Movie];
                 }
             }
 

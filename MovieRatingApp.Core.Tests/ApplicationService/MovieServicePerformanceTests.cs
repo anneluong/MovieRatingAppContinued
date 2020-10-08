@@ -8,7 +8,7 @@ namespace MovieRatingApp.Core.ApplicationService
 {
     public class MovieServicePerformanceTests
     {
-        private IMovieRepository _movieRepository;
+        private readonly IMovieRepository _movieRepository;
 
         public MovieServicePerformanceTests()
         {
@@ -16,7 +16,7 @@ namespace MovieRatingApp.Core.ApplicationService
         }
 
         [Fact]
-        public void Test1()
+        public void GetNumberOfReviewsFromReviewer_PerformanceTest()
         {
             IMovieService movieService = new MovieService(_movieRepository);
             DateTime start = DateTime.Now;
