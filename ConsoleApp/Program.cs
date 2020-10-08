@@ -1,4 +1,5 @@
-﻿using MovieRatingApp.Core.DomainService;
+﻿using MovieRatingApp.Core.ApplicationService.Implementations;
+using MovieRatingApp.Core.DomainService;
 using MovieRatingApp.Core.Entities;
 using MovieRatingApp.Infrastructure.Static.Data.Repositories;
 using System;
@@ -10,13 +11,24 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+
+
             IMovieRepository rep = new MovieRepositoryFileReader();
-            List<Rating> ratings = (List<Rating>)rep.GetAll();
-            for (int i = 0; i < 10; i++)
-            {
-                Rating c = ratings[i];
-                Console.WriteLine("Reviewer = " + c.Reviewer + " date = " + c.Date);
-            }
+            //List<Rating> ratings = (List<Rating>)rep.GetAll();
+            //for (int i = 0; i < 10; i++)
+            //{
+            //    Rating c = ratings[i];
+            //    Console.WriteLine("Reviewer = " + c.Reviewer + " date = " + c.Date);
+
+            var movieService = new MovieService(rep);
+
+            var list = movieService.GetMoviesWithHighestNumberOfTopRates();
+            Console.WriteLine("end");
+
+
+
+
         }
     }
 }
+

@@ -66,28 +66,18 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
 
         public List<int> GetMoviesWithHighestNumberOfTopRates() // RADO VERY DIFFERENT
         {
-            /*
-            var allRatings = _movieRepository.GetAll();
-            var allMovies = allRatings.Select(p => p.Movie).Distinct();
-            
-            var dictionary = new Dictionary<int, double>();
-            foreach (var movie in allMovies)
+            var allTopRatings = _movieRepository.GetAll().Where(r => r.Grade == 5);
+
+            var dict = new Dictionary<int, int>();
+            foreach (var r in allTopRatings)
             {
-                if (!dictionary.ContainsKey(movie))
-                {
-                    dictionary.Add(movie, GetNumberOfRates(movie,5));
-                }
+                if (!dict.ContainsKey(r.Movie))
+                    dict.Add(r.Movie, 1);
+                else
+                    dict[r.Movie] += 1;
             }
 
-            return dictionary.OrderByDescending(p => p.Value).Select(p => p.Key).ToList();
-            */
-            
-            
-             return _movieRepository.GetAll()
-                .OrderByDescending(p => GetNumberOfRates(p.Movie, 5))
-                .Select(p => p.Movie)
-                .Distinct()
-                .ToList();
+            return dict.OrderByDescending(p => p.Value).Select(p => p.Key).ToList();
         }
 
         public List<int> GetMostProductiveReviewers()
@@ -105,31 +95,31 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 throw new ArgumentException("The amount has to be larger than 0.");
 
             var allRatings = _movieRepository.GetAll();
-            var accumulatedGradeDictionary = new Dictionary<int,double>();
-            var countDictionary = new Dictionary<int,int>();
+            var accumulatedGradeDictionary = new Dictionary<int, double>();
+            var countDictionary = new Dictionary<int, int>();
             foreach (var rating in allRatings)
             {
                 if (!accumulatedGradeDictionary.ContainsKey(rating.Movie))
                 {
-                    accumulatedGradeDictionary.Add(rating.Movie,rating.Grade);
-                    countDictionary.Add(rating.Movie,1);
+                    accumulatedGradeDictionary.Add(rating.Movie, rating.Grade);
+                    countDictionary.Add(rating.Movie, 1);
                 }
                 else
                 {
                     var currentGrade = accumulatedGradeDictionary[rating.Movie];
-                    accumulatedGradeDictionary [rating.Movie] = (currentGrade + rating.Grade);
+                    accumulatedGradeDictionary[rating.Movie] = (currentGrade + rating.Grade);
                     var count = countDictionary[rating.Movie];
                     countDictionary[rating.Movie] = count + 1;
                 }
             }
 
-            var myDictionary = new Dictionary<int,double>();
+            var myDictionary = new Dictionary<int, double>();
             foreach (var pair in accumulatedGradeDictionary)
             {
                 var grade = accumulatedGradeDictionary[pair.Key];
                 var count = countDictionary[pair.Key];
 
-                myDictionary.Add(pair.Key,grade/count);
+                myDictionary.Add(pair.Key, grade / count);
             }
             return myDictionary.OrderByDescending(x => x.Value).Select(p => p.Key).Take(amount).ToList();
 
@@ -154,7 +144,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 .Select(p => p.Movie)
                 .ToList();
 
-            
+
             /*
             //RADO DIFFERENT: 2 sec
             var reviewersReviews = _movieRepository.GetAll()
