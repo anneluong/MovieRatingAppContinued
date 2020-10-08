@@ -1,7 +1,6 @@
 ﻿using MovieRatingApp.Core.DomainService;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 
 namespace MovieRatingApp.Core.ApplicationService.Implementations
@@ -26,8 +25,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
         {
             if (reviewer < 1)
                 throw new ArgumentException("The id of the reviewer has to be larger than 0.");
-            //return return _movieRepository.GetAll().Where(p => p.Movie == movie).Average(p => p.Grade);
-            return _movieRepository.GetAll().Where(p => p.Reviewer == reviewer).Select(p => p.Grade).Average();
+            return _movieRepository.GetAll().Where(p => p.Reviewer == reviewer).Average(p => p.Grade);
         }
 
         public int GetNumberOfRatesByReviewer(int reviewer, int rate)
@@ -51,6 +49,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
             if (movie < 1)
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
             return _movieRepository.GetAll().Where(p => p.Movie == movie).Average(p => p.Grade);
+            //Written slightly differently. Which is better for readability?
             //return _movieRepository.GetAll().Where(p => p.Movie == movie).Select(p => p.Grade).Average();
         }
 
@@ -60,8 +59,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 throw new ArgumentException("The id of the movie has to be larger than 0.");
             if (!(rate > 0 && rate < 6))
                 throw new ArgumentException("The rate has to be within the range 1-5.");
-            else
-                return _movieRepository.GetAll().Count(p => p.Movie == movie && p.Grade == rate);
+            return _movieRepository.GetAll().Count(p => p.Movie == movie && p.Grade == rate);
         }
 
         public List<int> GetMoviesWithHighestNumberOfTopRates() // RADO VERY DIFFERENT
@@ -108,8 +106,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 {
                     var currentGrade = accumulatedGradeDictionary[rating.Movie];
                     accumulatedGradeDictionary[rating.Movie] = (currentGrade + rating.Grade);
-                    var count = countDictionary[rating.Movie];
-                    countDictionary[rating.Movie] = count + 1;
+                    countDictionary[rating.Movie]++;
                 }
             }
 
@@ -132,7 +129,7 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
             */
         }
 
-        public List<int> GetTopMoviesByReviewer(int reviewer) //RADO DIFFERENT
+        public List<int> GetTopMoviesByReviewer(int reviewer)
         {
             //ANNE DIFFERENT: 1 sec
             if (reviewer < 1)
@@ -143,7 +140,6 @@ namespace MovieRatingApp.Core.ApplicationService.Implementations
                 .ThenByDescending(p => p.Date)
                 .Select(p => p.Movie)
                 .ToList();
-
 
             /*
             //RADO DIFFERENT: 2 sec

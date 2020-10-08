@@ -12,166 +12,257 @@ namespace MovieRatingApp.Core.ApplicationService
     public class MovieServiceFunctionalTests
     {
         [Fact]
-        public void TestNumberOfReviewsFromReviewer()
+        public void GetNumberOfReviewsFromReviewer_InvalidInput_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetNumberOfReviewsFromReviewer(invalidInput));
+        }
+
+        [Fact]
+        public void GetNumberOfReviewsFromReviewer_ReturnsCorrectResults()
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
-                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            const int expectedResult = 2;
 
             //Act
-            var actualResult = ratingService.GetNumberOfReviewsFromReviewer(reviewer: 111);
+            var actualResult = movieService.GetNumberOfReviewsFromReviewer(reviewer: 1);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult == 2, "Number of reviews is NOT 2.");
+            Assert.True(actualResult == expectedResult, "Number of reviews is NOT as expected.");
         }
 
         [Fact]
-        public void TestAverageRateFromReviewer()
+        public void GetAverageRateFromReviewer_InvalidInput_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetAverageRateFromReviewer(invalidInput));
+        }
+
+        [Fact]
+        public void GetAverageRateFromReviewer_ReturnsCorrectResults()
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
-                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 2, Movie = 2, Grade = 2},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            var expectedResult = 3.5;
 
             //Act
-            var actualResult = ratingService.GetAverageRateFromReviewer(reviewer: 111);
+            var actualResult = movieService.GetAverageRateFromReviewer(reviewer: 1);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult.Equals(3.5), "Average rate is not 3.5.");
+            Assert.True(actualResult.Equals(expectedResult), "Average rate is NOT as expected.");
         }
 
-        [Fact]
-        public void TestNumberOfRatesByReviewer()
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 6)]
+        public void GetNumberOfRatesByReviewer_InvalidInput_ThrowsArgumentException(int inputReviewer, int inputRate)
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetNumberOfRatesByReviewer(inputReviewer, inputRate));
+        }
+
+        [Theory]
+        [InlineData(1, 1, 0)]
+        [InlineData(1, 5, 2)]
+        public void GetNumberOfRatesByReviewer_ReturnsCorrectResults(int inputReviewer, int inputRate,
+            int expectedResult)
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
-                new Rating {Reviewer = 111, Movie = 3, Grade = 5},
-                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 1, Movie = 3, Grade = 5},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
 
             //Act
-            var actualResult = ratingService.GetNumberOfRatesByReviewer(reviewer: 111, 5);
+            var actualResult = movieService.GetNumberOfRatesByReviewer(reviewer: inputReviewer, inputRate);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult == 2, "Number of rating 5 (from Reviewer = 111) is NOT 2.");
+            Assert.True(actualResult == expectedResult, "Number of rating 5 is NOT as expected.");
         }
 
         [Fact]
-        public void TestNumberOfReviews()
+
+        public void GetNumberOfReviews_InvalidInput_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetNumberOfReviews(invalidInput));
+        }
+
+        [Fact]
+        public void GetNumberOfReviews_ReturnsCorrectResults()
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
-                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            const int expectedResult = 2;
 
             //Act
-            var actualResult = ratingService.GetNumberOfReviews(1);
+            var actualResult = movieService.GetNumberOfReviews(1);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult == 2, "Number of reviews is NOT 2.");
+            Assert.True(actualResult == expectedResult, "Number of reviews is NOT as expected.");
         }
 
         [Fact]
-        public void TestAverageRateOfMovie()
+        public void GetAverageRateOfMovie_InvalidInput_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetAverageRateOfMovie(invalidInput));
+        }
+
+        [Fact]
+        public void GetAverageRateOfMovie_ReturnsCorrectResults()
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
-                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            const double expectedResult = 1.5;
 
             //Act
-            var actualResult = ratingService.GetAverageRateOfMovie(1);
+            var actualResult = movieService.GetAverageRateOfMovie(1);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult.Equals(1.5), "Average rate is not 1.5.");
+            Assert.True(actualResult.Equals(expectedResult), "Average rate is NOT as expected.");
         }
 
-        //This one is very slow compared to others. Find out why.
-        [Fact]
-        public void TestNumberOfRates()
+        [Theory]
+        [InlineData(0, 1)]
+        [InlineData(1, 0)]
+        [InlineData(1, 6)]
+        public void GetNumberOfRates_InvalidInput_ThrowsArgumentException(int inputMovie, int inputRate)
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetNumberOfRates(inputMovie, inputRate));
+        }
+
+        [Theory]
+        [InlineData(1, 1, 2)]
+        [InlineData(1, 5, 0)]
+        public void GetNumberOfRates_ReturnsCorrectResults(int inputMovie, int inputRate, int expectedResult)
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5},
-                new Rating {Reviewer = 111, Movie = 3, Grade = 5},
-                new Rating {Reviewer = 112, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 1},
+                new Rating {Reviewer = 3, Movie = 1, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
 
             //Act
-            var actualResult = ratingService.GetNumberOfRates(1, 1);
+            var actualResult = movieService.GetNumberOfRates(inputMovie, inputRate);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            Assert.True(actualResult == 1, "Number of rating 1 (for Movie = 1) is NOT 1.");
+            Assert.True(actualResult == expectedResult,
+                "Number of rating for the respective movies is NOT as expected.");
         }
 
         [Fact]
-        public void TestMoviesWithHighestNumberOfTopRates() //RADO DIFFERENT
+        public void GetMoviesWithHighestNumberOfTopRates_ReturnsCorrectResults() //RADO DIFFERENT
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
@@ -193,22 +284,23 @@ namespace MovieRatingApp.Core.ApplicationService
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            var expectedResult = new List<int>() { 1, 3, 2 };
 
             //Act
-            var actualResult = ratingService.GetMoviesWithHighestNumberOfTopRates();
+            var actualResult = movieService.GetMoviesWithHighestNumberOfTopRates();
 
             //Assert
             //mock.Verify(m => m.GetAll(), Times.Exactly(10));
             //mock.Verify(m => m.GetAll(), Times.Exactly(4));
 
-            var expectedResult = new List<int>() { 1, 3, 2 };
-
-            Assert.True(actualResult.SequenceEqual(expectedResult), "Top 5 movies with highest number of rating 5 is not as expected.");
+            Assert.True(actualResult.SequenceEqual(expectedResult),
+                "Top movies with highest number of rating is NOT as expected.");
         }
 
         [Fact]
-        public void TestMostProductiveReviewers()
+        public void GetMostProductiveReviewers_ReturnsCorrectResults()
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
@@ -227,87 +319,118 @@ namespace MovieRatingApp.Core.ApplicationService
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            var expectedResult = new List<int>() { 111, 113, 112 };
 
             //Act
-            var actualResult = ratingService.GetMostProductiveReviewers();
+            var actualResult = movieService.GetMostProductiveReviewers();
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            var expectedResult = new List<int>() { 111, 113, 112 };
-
-            Assert.True(actualResult.SequenceEqual(expectedResult), "The list of most productive reviewers is NOT { 111, 113, 112 }.");
+            Assert.True(actualResult.SequenceEqual(expectedResult),
+                "The list of most productive reviewers is NOT as expected.");
         }
 
         [Fact]
-        public void TestTopRatedMovies()
+        public void GetTopRatedMovies_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetTopRatedMovies(invalidInput));
+        }
+
+        [Theory]
+        [MemberData(nameof(Data))]
+        public void GetTopRatedMovies_ReturnsCorrectResults(int inputAmount, List<int> expectedResult)
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 5},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 2},
-                new Rating {Reviewer = 111, Movie = 3, Grade = 3},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 5},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 2},
+                new Rating {Reviewer = 1, Movie = 3, Grade = 3},
 
-                new Rating {Reviewer = 112, Movie = 1, Grade = 4},
-                new Rating {Reviewer = 112, Movie = 2, Grade = 4},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 4},
+                new Rating {Reviewer = 2, Movie = 2, Grade = 4},
 
-                new Rating {Reviewer = 113, Movie = 2, Grade = 4},
-                new Rating {Reviewer = 113, Movie = 3, Grade = 4},
-                new Rating {Reviewer = 113, Movie = 4, Grade = 1},
+                new Rating {Reviewer = 3, Movie = 2, Grade = 4},
+                new Rating {Reviewer = 3, Movie = 3, Grade = 4},
+                new Rating {Reviewer = 3, Movie = 4, Grade = 1},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
 
             //Act
-            var actualResult = ratingService.GetTopRatedMovies(3);
+            var actualResult = movieService.GetTopRatedMovies(inputAmount);
 
             //Assert
             //mock.Verify(m => m.GetAll(), Times.Exactly(9));
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            var expectedResult = new List<int>() { 1, 3, 2 };
-
-            Assert.True(actualResult.SequenceEqual(expectedResult), "The list of top 3 rated movies is NOT { 1, 3, 2 }.");
+            Assert.True(actualResult.SequenceEqual(expectedResult),
+                "The list of top rated movies is NOT as expected.");
+        }
+        public static IEnumerable<object[]> Data()
+        {
+            yield return new object[] { 1, new List<int> { 1 } };
+            yield return new object[] { 3, new List<int> { 1, 3, 2 } };
         }
 
         [Fact]
-        public void TestTopMoviesByReviewer() // RADO DIFFERENT
+        public void GetTopMoviesByReviewer_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetTopMoviesByReviewer(invalidInput));
+        }
+
+        [Fact]
+        public void GetTopMoviesByReviewer_ReturnsCorrectResults() // RADO DIFFERENT
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
 
             Rating[] returnValue =
             {
-                new Rating {Reviewer = 111, Movie = 1, Grade = 4, Date = DateTime.Parse("2020-03-11")},
-                new Rating {Reviewer = 111, Movie = 2, Grade = 5, Date = DateTime.Parse("2002-03-12")},
-                new Rating {Reviewer = 111, Movie = 3, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 1, Movie = 1, Grade = 4, Date = DateTime.Parse("2020-03-11")},
+                new Rating {Reviewer = 1, Movie = 2, Grade = 5, Date = DateTime.Parse("2002-03-12")},
+                new Rating {Reviewer = 1, Movie = 3, Grade = 4, Date = DateTime.Parse("2020-03-12")},
 
-                new Rating {Reviewer = 112, Movie = 1, Grade = 3, Date = DateTime.Parse("2020-03-12")},
-                new Rating {Reviewer = 112, Movie = 2, Grade = 4, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 2, Movie = 1, Grade = 3, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 2, Movie = 2, Grade = 4, Date = DateTime.Parse("2020-03-12")},
 
-                new Rating {Reviewer = 113, Movie = 2, Grade = 5, Date = DateTime.Parse("2020-03-12")},
-                new Rating {Reviewer = 113, Movie = 3, Grade = 3, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 3, Movie = 2, Grade = 5, Date = DateTime.Parse("2020-03-12")},
+                new Rating {Reviewer = 3, Movie = 3, Grade = 3, Date = DateTime.Parse("2020-03-12")},
             };
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            var expectedResult = new List<int>() { 2, 3, 1 };
 
             //Act
-            var actualResult = ratingService.GetTopMoviesByReviewer(reviewer: 111);
+            var actualResult = movieService.GetTopMoviesByReviewer(reviewer: 1);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            var expectedResult = new List<int>() { 2, 3, 1 };
-
-            Assert.True(actualResult.SequenceEqual(expectedResult), "The list of movies in order of rating (subsequently date) is NOT { 2, 3, 1 }.");
+            Assert.True(actualResult.SequenceEqual(expectedResult),
+                "The list of movies in order of rating (subsequently date) is NOT as expected.");
 
             //RADO DIFFERENT
             Assert.True(actualResult.ElementAt(0) == 2);
@@ -316,7 +439,19 @@ namespace MovieRatingApp.Core.ApplicationService
         }
 
         [Fact]
-        public void TestReviewersByMovie()
+        public void GetReviewersByMovie_ThrowsArgumentException()
+        {
+            //Arrange
+            Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
+            var movieService = new MovieService(mock.Object);
+            const int invalidInput = 0;
+
+            //Act+Assert
+            Assert.Throws<ArgumentException>(() => movieService.GetTopMoviesByReviewer(invalidInput));
+        }
+
+        [Fact]
+        public void GetReviewersByMovie_ReturnsCorrectResults()
         {
             //Arrange
             Mock<IMovieRepository> mock = new Mock<IMovieRepository>();
@@ -336,18 +471,18 @@ namespace MovieRatingApp.Core.ApplicationService
 
             mock.Setup(m => m.GetAll()).Returns(() => returnValue);
 
-            var ratingService = new MovieService(mock.Object);
+            var movieService = new MovieService(mock.Object);
+
+            var expectedResult = new List<int>() { 112, 111 };
 
             //Act
-            var actualResult = ratingService.GetReviewersByMovie(movie: 1);
+            var actualResult = movieService.GetReviewersByMovie(movie: 1);
 
             //Assert
             mock.Verify(m => m.GetAll(), Times.Once);
 
-            var expectedResult = new List<int>() { 112, 111 };
-
-            Assert.True(actualResult.SequenceEqual(expectedResult), "The list of reviewers in order of rating (subsequently date) is NOT { 112, 111 }.");
-
+            Assert.True(actualResult.SequenceEqual(expectedResult),
+                "The list of reviewers in order of rating (subsequently date) is NOT as expected.");
         }
     }
 }
